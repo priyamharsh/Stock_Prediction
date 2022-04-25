@@ -8,13 +8,14 @@ from sklearn.ensemble import VotingRegressor
 import joblib
 from datetime import datetime
 from datetime import timedelta
+from datetime import date
 import yfinance as yf
 import streamlit as st
 
 st.set_page_config(
      page_title="Stock Predictor",
      page_icon=":stock:",
-     layout="wide",
+     layout="centered",
      initial_sidebar_state="expanded",
      menu_items={
          'Get Help': 'https://finance.yahoo.com/',
@@ -25,14 +26,14 @@ st.set_page_config(
 st.title('Stock Trend Prediction')
 # taking user input for stock ticker
 stock_ticker = st.text_input('Enter the stock ticker', 'AAPL')
-
-# specifying start and end time
+end_date = st.text_input('Enter end date, YYYY-MM-DD', str(date.today()))
 start = pd.to_datetime(['2007-01-01']).astype(int)[0]//10**9 # convert to unix timestamp.
-end = pd.to_datetime(['2022-04-22']).astype(int)[0]//10**9 # convert to unix timestamp.
+end = pd.to_datetime([end_date]).astype(int)[0]//10**9 # convert to unix timestamp.
 url = 'https://query1.finance.yahoo.com/v7/finance/download/' + stock_ticker + '?period1=' + str(start) + '&period2=' + str(end) + '&interval=1d&events=history'
 
 # loading data
 df = pd.read_csv(url)
+df.dropna(inplace = True)
 
 # get stock info
 stock_info = yf.Ticker(stock_ticker)
@@ -77,8 +78,8 @@ plt.legend()
 st.pyplot(fig)
 
 # preprocessing the data
-data_training = pd.DataFrame(df['Adj Close'][:int(len(df)*0.70)])
-data_testing = pd.DataFrame(df['Adj Close'][int(len(df)*0.70):int(len(df))])
+data_training = pd.DataFrame(df['Adj Close'][:100])
+data_testing = pd.DataFrame(df['Adj Close'][100:int(len(df))])
 # scaling the data
 sca = MinMaxScaler(feature_range=(0,1))
 past100 = data_training.tail(100)
