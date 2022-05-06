@@ -6,6 +6,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.ensemble import VotingRegressor
 import xgboost
+from xgboost import XGBRegressor
 import joblib
 from datetime import datetime
 from datetime import timedelta
