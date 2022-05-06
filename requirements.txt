@@ -5,3 +5,4 @@ scikit-learn
 joblib
 datetime
 yfinance
+xgboost==0.90

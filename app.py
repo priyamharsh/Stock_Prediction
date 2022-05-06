@@ -5,6 +5,7 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.ensemble import VotingRegressor
+import xgboost
 import joblib
 from datetime import datetime
 from datetime import timedelta
@@ -95,7 +96,7 @@ x_test, y_test = np.array(x_test), np.array(y_test)
 x_test = np.reshape(x_test, (x_test.shape[0], x_test.shape[1]))
 
 # loading the trained model and predicting trends
-model = joblib.load('ensemble_model.pkl')
+model = joblib.load('ensemble_model.sav')
 y_pred = model.predict(x_test)
 st.subheader('Predicted Price vs. Actual Price')
 fig = plt.figure(figsize=(12,6))
